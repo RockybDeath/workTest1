@@ -63,6 +63,21 @@ export const makeBusinessSocket = (config: SocketConfig) => {
 		return parseCatalogNode(result)
 	}
 
+	const getLabels = async(jid?: string) => {
+		jid = jid || authState.creds.me?.id
+		jid = jidNormalizedUser(jid!)
+		const result = await query({
+			tag: 'iq',
+			attrs:{
+				to: S_WHATSAPP_NET,
+				type: 'get',
+				xmlns: 'w:biz:label',
+				smax_id: '35'
+			}
+		})
+		return result
+	}
+
 	const getCollections = async(jid?: string, limit = 51) => {
 		jid = jid || authState.creds.me?.id
 		jid = jidNormalizedUser(jid!)
@@ -273,6 +288,7 @@ export const makeBusinessSocket = (config: SocketConfig) => {
 		getOrderDetails,
 		getCatalog,
 		getCollections,
+		getLabels,
 		productCreate,
 		productDelete,
 		productUpdate
